@@ -19,9 +19,11 @@
   "homepage": "https://github.com/SakibHasanCse/QrapQL#readme",
   "dependencies": {
     "apollo-server": "^2.25.1",
+    "dotenv": "^10.0.0",
     "express-graphql": "^0.12.0",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
-    "mongoose": "^5.12.14"
+    "mongoose": "^5.12.14",
+    "nodemon": "^2.0.7"
   }
 }
