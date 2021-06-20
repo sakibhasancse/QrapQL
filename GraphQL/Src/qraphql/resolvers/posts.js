@@ -1,11 +1,17 @@
 const Post = require('../../models/Post')
 const slugify = require('slugify');
-const { checkAuth } = require('../../../utils/auth')
+const { checkAuth } = require('../../../utils/auth');
+const { AuthorizationError } = require('apollo-server');
 module.exports = {
     Query: {
         async getPosts() {
-            const posts = await Post.find()
-            return posts
+            try {
+                const posts = await Post.find();
+                return posts
+            } catch (error) {
+                throw new Error("Internal server error", +error);
+            }
+
         },
         async getPost(_, { slug }) {
             try {
@@ -23,7 +29,7 @@ module.exports = {
         async createPost(_, { title, body }, context) {
             try {
                 const user = checkAuth(context),
-                    slug = slugify(title),
+                    slug = slugify(title).toUpperCase(),
                     newPost = new Post({
                         slug,
                         title,
@@ -32,15 +38,27 @@ module.exports = {
                         username: user.username,
                         createdAt: new Date().toDateString()
                     });
-                console.log(user);
-                await newPost.save((post, error) => {
-                    if (error) throw new Error("Somthing went wrong try agin")
-                    return post;
-                })
+
+                const post = await newPost.save()
+                return post;
+
             } catch (error) {
                 throw new Error(error)
             }
 
+        },
+        async deletePost(_, { slug }, context) {
+            try {
+                const user = checkAuth(context);
+                const post = await Post.findOne({ slug });
+                if (!post) throw new Error('Post not found')
+                if (user.id !== post.id) throw new AuthorizationError('Access Denied , you are not allowed to delete this post')
+                await Post.findByIdAndDelete(post._id);
+                return 'Post deleted successfully'
+
+            } catch (error) {
+                throw new Error(error)
+            }
         }
     }
 }
