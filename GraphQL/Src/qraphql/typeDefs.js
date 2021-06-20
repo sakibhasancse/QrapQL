@@ -8,6 +8,7 @@ module.exports = gql`
         body:String!,
         createdAt:String!,
         user:String!,
+        username:String! ,
 
     }
     type User{
@@ -32,7 +33,7 @@ module.exports = gql`
     type Mutation {
         register(registerInput : RegisterInput) : User!
         Login(email:String! , password:String!) : User!
-        createPost(body:String! ,title:String!) :Post!
+        createPost(body:String! ,title:String!) : Post!
         deletePost(slug:String!) : String!
     }
 `

@@ -7,7 +7,8 @@ const resolvers = require("./qraphql/resolvers")
 
 const server = new ApolloServer({
     typeDefs: typeDefs,
-    resolvers: resolvers
+    resolvers: resolvers,
+    context: ({ req }) => ({ req })
 })
 
 

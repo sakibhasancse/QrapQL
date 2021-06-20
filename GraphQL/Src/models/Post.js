@@ -3,6 +3,7 @@ const postSchema = new Schema({
     title: { type: String },
     slug: { type: String },
     body: { type: String },
+    username: { type: String },
     createdAt: { type: String },
     comments: [
         {
