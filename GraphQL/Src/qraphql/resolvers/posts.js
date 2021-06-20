@@ -17,6 +17,7 @@ module.exports = {
 
         }
     },
+
     Mutation: {
         async createPost(_, { title, body }) {
             try {
