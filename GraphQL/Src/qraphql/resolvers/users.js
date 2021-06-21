@@ -17,6 +17,8 @@ module.exports = {
             const user = await User.findOne({ email })
             if (user) throw new UserInputError("User already exists with: " + email)
             password = await bcrypt.hash(password, 12);
+
+
             const username = uid(),
                 newUser = new User({
                     name, username, password, email, username, createdAt: new Date().toISOString(),

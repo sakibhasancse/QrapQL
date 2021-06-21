@@ -1,7 +1,7 @@
 const Post = require('../../models/Post')
 const slugify = require('slugify');
 const { checkAuth } = require('../../../utils/auth');
-const { AuthorizationError } = require('apollo-server');
+const { AuthenticationError } = require('apollo-server');
 module.exports = {
     Query: {
         async getPosts() {
@@ -29,7 +29,7 @@ module.exports = {
         async createPost(_, { title, body }, context) {
             try {
                 const user = checkAuth(context),
-                    slug = slugify(title).toUpperCase(),
+                    slug = slugify(title).toLowerCase(),
                     newPost = new Post({
                         slug,
                         title,
@@ -51,12 +51,13 @@ module.exports = {
             try {
                 const user = checkAuth(context);
                 const post = await Post.findOne({ slug });
-                if (!post) throw new Error('Post not found')
-                if (user.id !== post.id) throw new AuthorizationError('Access Denied , you are not allowed to delete this post')
+                if (!post) throw new Error('Post not found');
+                if (user.id != post.user) throw new AuthenticationError('Access Denied , you are not allowed to delete this post')
                 await Post.findByIdAndDelete(post._id);
                 return 'Post deleted successfully'
 
             } catch (error) {
+                console.log(error)
                 throw new Error(error)
             }
         }
