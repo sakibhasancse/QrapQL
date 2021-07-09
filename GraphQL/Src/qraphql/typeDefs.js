@@ -48,8 +48,8 @@ module.exports = gql`
         Login(email:String! , password:String!) : User!
         createPost(body:String! ,title:String!) : Post!
         deletePost(slug:String!) : String!
-        createComment(body:String!, postId:ID!) : Post!
-        deleteComment(postId:ID! ,comments:String!) : Post!
+        createComment(body:String!, postId:String!) : Comment!
+        deleteComment(postId:ID! ,comments:String!) : Comment!
         LikePost(postId:ID!) : Post!
     }
 `

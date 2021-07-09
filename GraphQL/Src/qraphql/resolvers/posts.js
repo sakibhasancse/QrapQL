@@ -2,11 +2,14 @@ const Post = require('../../models/Post')
 const slugify = require('slugify');
 const { checkAuth } = require('../../../utils/auth');
 const { AuthenticationError } = require('apollo-server');
+const { size } = require('lodash')
+
 module.exports = {
     Query: {
         async getPosts() {
             try {
                 const posts = await Post.find();
+
                 return posts
             } catch (error) {
                 throw new Error("Internal server error", +error);
