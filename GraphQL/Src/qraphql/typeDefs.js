@@ -10,7 +10,9 @@ module.exports = gql`
         user:String!,
         username:String! ,
         comments: [Comment!]!,
-        likes:[Like!]!
+        likes:[Like!]!,
+        likeCount: Int!,
+        commentCount: Int!
 
     }
     type Comment{
@@ -31,6 +33,7 @@ module.exports = gql`
         name:String!
         token: String!
         createdAt:String!
+        username:String!
     }
     input RegisterInput {
         name:String!,
@@ -48,8 +51,12 @@ module.exports = gql`
         Login(email:String! , password:String!) : User!
         createPost(body:String! ,title:String!) : Post!
         deletePost(slug:String!) : String!
-        createComment(body:String!, postId:String!) : Comment!
-        deleteComment(postId:ID! ,comments:String!) : Comment!
+        createComment(body:String!, postId:String!) : Post!
+        deleteComment(postId:ID! ,commentId:ID!) : Post!
         LikePost(postId:ID!) : Post!
+    }
+
+    type Subscription{
+        newPost:Post!
     }
 `

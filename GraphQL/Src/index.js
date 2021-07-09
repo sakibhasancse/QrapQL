@@ -1,14 +1,15 @@
-const { ApolloServer } = require('apollo-server')
+const { ApolloServer, PubSub } = require('apollo-server')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
 const typeDefs = require("./qraphql/typeDefs")
 const resolvers = require("./qraphql/resolvers")
 
+const pubsub = new PubSub();
 const server = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
-    context: ({ req }) => ({ req })
+    context: ({ req }) => ({ req, pubsub })
 })
 
 

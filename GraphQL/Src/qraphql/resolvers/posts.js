@@ -42,7 +42,10 @@ module.exports = {
                         createdAt: new Date().toDateString()
                     });
 
-                const post = await newPost.save()
+                const post = await newPost.save();
+                context.pubsub.publish('NEW_POST', {
+                    newPost: post
+                })
                 return post;
 
             } catch (error) {
@@ -65,4 +68,5 @@ module.exports = {
             }
         }
     }
+
 }
